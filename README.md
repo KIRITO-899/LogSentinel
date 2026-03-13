@@ -67,3 +67,4 @@ To run the application, follow these steps:
 
 The application will then be accessible at `http://localhost:3000`.
 # LogSentinel
+# Logsentinel
