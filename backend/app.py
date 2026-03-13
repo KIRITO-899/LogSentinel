@@ -44,8 +44,14 @@ def _get_all_logs():
         
     return logs
 
-@app.route('/api/logs')
-def get_logs():
+@app.route('/api/logs', methods=['GET','POST'])
+def logs_api():
+
+    if request.method == 'POST':
+        new_log = request.json
+        print(new_log)   # shows the received data
+        return {"message": "log received"}
+
     logs = _get_all_logs()
     return jsonify(logs)
 
