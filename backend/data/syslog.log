@@ -1,0 +1,8 @@
+Mar 12 10:30:01 my-laptop CRON[12345]: (root) CMD (command)
+Mar 12 10:30:01 my-laptop systemd[1]: Starting clean up of temporary directories...
+Mar 12 10:30:02 my-laptop kernel: [    0.000000] Linux version 5.15.0-67-generic (buildd@bos02-amd64-035) (gcc (Ubuntu 11.3.0-1ubuntu1~22.04) 11.3.0, GNU ld (GNU Binutils for Ubuntu) 2.38) #74-Ubuntu SMP Wed Feb 22 14:14:10 UTC 2023
+Mar 12 10:30:05 my-laptop systemd[1]: Finished clean up of temporary directories.
+Mar 12 10:30:09 my-laptop anacron[1234]: Job `cron.daily' started
+Mar 12 10:30:10 my-laptop anacron[1234]: Job `cron.daily' terminated
+Mar 12 10:30:15 my-laptop dbus-daemon[987]: [system] Activating via systemd: service name='org.freedesktop.hostname1' unit='dbus-org.freedesktop.hostname1.service' requested by ':1.124' (uid=1000 pid=10019 comm="/usr/bin/snapd " label="unconfined")
+Mar 12 10:30:20 my-laptop systemd[1]: Started Hostname Service.

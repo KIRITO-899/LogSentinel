@@ -1,0 +1,8 @@
+Mar 12 10:45:01 my-laptop sshd[12345]: Failed password for invalid user guest from 192.168.1.100 port 22 ssh2
+Mar 12 10:45:03 my-laptop sshd[12345]: Failed password for invalid user guest from 192.168.1.100 port 22 ssh2
+Mar 12 10:45:05 my-laptop sshd[12345]: Failed password for invalid user guest from 192.168.1.100 port 22 ssh2
+Mar 12 10:45:08 my-laptop sshd[12345]: Connection closed by authenticating user root 192.168.1.100 port 22 [preauth]
+Mar 12 10:45:10 my-laptop sudo: pam_unix(sudo:session): session opened for user root by (uid=0)
+Mar 12 10:45:12 my-laptop sudo: pam_unix(sudo:session): session closed for user root
+Mar 12 10:50:01 my-laptop CRON[12360]: pam_unix(cron:session): session opened for user root by (uid=0)
+Mar 12 10:50:01 my-laptop CRON[12360]: pam_unix(cron:session): session closed for user root
