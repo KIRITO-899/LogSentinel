@@ -1,70 +1,88 @@
-# LogSentinel: A Web-Based Log Analysis Dashboard
+# 🛡️ LogSentinel: Real-Time Cross-Platform Log Analyzer
 
-## Introduction
+**LogSentinel** is a powerful and intuitive web-based dashboard designed to provide a comprehensive, second-by-second overview of your system's security and application events. It natively hooks into your operating system's event pipelines to give you instant visibility into potential threats.
 
-LogSentinel is a powerful and intuitive web-based log analysis dashboard designed to provide a comprehensive overview of system logs. It helps users to monitor, analyze, and visualize log data in real-time, enabling them to quickly identify and respond to potential security threats and system issues.
+---
 
-## Features
+## ✨ Key Features
 
-*   **Real-time Log Analysis:** Ingests and processes `auth.log` and `syslog.log` files in real-time.
-*   **Interactive Dashboard:** A user-friendly and interactive dashboard for log visualization and analysis.
-*   **Threat Detection:** Automatically detects potential security threats, such as multiple failed login attempts.
-*   **Data Visualization:** Includes a variety of charts and graphs to visualize log data, such as logs per process and events over time.
-*   **Filtering and Searching:** Powerful filtering and searching capabilities to quickly find the information you need.
-*   **Alerts:** Real-time alerts to notify users of potential security threats.
+*   **⚡ True Real-Time Ingestion:** Powered by WebSockets (`Flask-SocketIO`), LogSentinel streams events to your browser within milliseconds of them occurring. No database refreshing, no polling delays.
+*   **🌍 Cross-Platform Native Agents:** 
+    *   **🪟 Windows:** Hooks directly into the `pywin32` Event Log API to capture *Security* and *Application* event streams natively. 
+    *   **🐧 Linux:** Recursively tails and parses `/var/log/syslog` and `/var/log/auth.log` files.
+*   **🎯 Automated Threat Detection:** Instantly flags security threats—like multiple failed login attempts from a single IP (e.g., Windows Event ID `4625`)—and pushes high-priority alerts straight to the UI.
+*   **📊 Dynamic Visualization:** Uses Recharts to render beautiful, live-updating charts showing event velocity over time and distribution across processes.
+*   **🔍 Interactive Data Grid:** Explore thousands of logs efficiently with a lightning-fast data grid featuring built-in sorting and filtering.
 
-## Architecture
+---
 
-LogSentinel follows a client-server architecture, with a React-based frontend and a Python-based backend.
+## 🏗️ Architecture
 
-### Backend
+LogSentinel follows a modern, decoupled architecture:
 
-The backend is built with the Flask framework and is responsible for the following:
+*   **Backend (Python/Flask):** A multi-threaded WebSocket server. On startup, it intelligently detects your host OS (`sys.platform`), spawns a background collector thread to stream native OS events, standardizes the payload into a unified JSON format, and broadcasts it.
+*   **Frontend (React):** A responsive Single Page Application (SPA). It establishes a persistent `socket.io-client` connection to ingest the live data stream without ever refreshing the page.
 
-*   **Log Parsing:** It parses `auth.log` and `syslog.log` files to extract key information, including:
-    *   Timestamp
-    *   Hostname
-    *   Process Name
-    *   Message
-    *   Source IP
-    *   Severity
-*   **Threat Detection:** The `threat_detector.py` module analyzes the logs for potential security threats. Currently, it detects multiple failed login attempts from the same IP address.
-*   **API Endpoints:** The backend exposes the following API endpoints:
-    *   `/api/logs`: Returns all the parsed logs.
-    *   `/api/alerts`: Returns a list of security alerts detected from the logs.
+---
 
-### Frontend
+## 🚀 Getting Started
 
-The frontend is a single-page application built with React. It provides a dynamic and interactive dashboard for log analysis and visualization. The key components of the frontend include:
+Follow these steps to get your LogSentinel dashboard up and running.
 
-*   **Alerts:** Displays real-time security alerts.
-*   **Filters:** Enables users to filter logs by log type and process name.
-*   **LogChart:** A bar chart that visualizes the distribution of logs per process name.
-*   **TimeChart:** A line chart that shows the trend of log events over time.
-*   **LogTable:** A comprehensive table of all log entries, with features for sorting and filtering.
+### 1. Start the Backend
 
-The frontend uses the following libraries:
+Open your terminal and navigate to the backend directory. 
 
-*   **Recharts:** For creating interactive charts and graphs.
-*   **@mui/x-data-grid:** For creating a powerful and feature-rich data grid.
+> [!IMPORTANT]  
+> **Windows Users:** To capture *Security* events (like failed logins), you **must** open your terminal or command prompt as an **Administrator**. Otherwise, only *Application* events will be captured.
+> **Linux / WSL Users:** You run perfectly natively inside WSL by tailing the `/var/log/` directory. However, because `/var/log/auth.log` is a protected file, you will need to run the python server with `sudo` privileges.
 
-## How to Run
+```bash
+cd backend
 
-To run the application, follow these steps:
+# Create and activate a virtual environment
+python -m venv venv
 
-1.  **Start the backend:**
-    ```bash
-    cd backend
-    pip install -r requirements.txt
-    python app.py
-    ```
-2.  **Start the frontend:**
-    ```bash
-    cd frontend
-    npm install
-    npm start
-    ```
+# On Windows:
+venv\Scripts\activate
+# On Linux/macOS/WSL:
+# source venv/bin/activate
 
-The application will then be accessible at `http://localhost:3000`.
-# LogSentinel
-# Logsentinel
+# Install the required dependencies
+pip install -r requirements.txt
+
+# Start the Flask-SocketIO server
+# (Windows)
+python app.py
+# (Linux / WSL - require sudo for auth logs)
+# sudo venv/bin/python app.py
+```
+
+### 2. Start the Frontend
+
+Open a new terminal window and navigate to the frontend directory:
+
+```bash
+cd frontend
+
+# Install React dependencies (including MUI and Socket.io)
+npm install
+
+# Start the React development server
+npm start
+```
+
+### 3. View Your Dashboard
+Once both servers are running, open your browser and navigate to:  
+🔗 **http://localhost:3000**
+
+You will immediately see your historical system events populate, followed by a live, uninterrupted stream of new activity.
+
+---
+
+## 🛠️ Tech Stack
+* **Frontend:** React, Material-UI (DataGrid v8), Recharts, Socket.io-Client
+* **Backend:** Python, Flask, Flask-SocketIO, Eventlet, PyWin32 (Windows)
+
+---
+*Built with security and speed in mind.*

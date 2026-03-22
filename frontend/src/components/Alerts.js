@@ -1,20 +1,7 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import React from 'react';
 
-const Alerts = () => {
-  const [alerts, setAlerts] = useState([]);
-
-  useEffect(() => {
-    axios.get('/api/alerts')
-      .then(response => {
-        setAlerts(response.data);
-      })
-      .catch(error => {
-        console.error('Error fetching alerts:', error);
-      });
-  }, []);
-
-  if (alerts.length === 0) {
+const Alerts = ({ alerts }) => {
+  if (!alerts || alerts.length === 0) {
     return null;
   }
 

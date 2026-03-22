@@ -1,2 +1,5 @@
 Flask
-Flask-Cors
+Flask-Cors==3.0.10
+Flask-SocketIO
+eventlet
+pywin32; sys_platform == 'win32'

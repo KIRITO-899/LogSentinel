@@ -6,3 +6,6 @@ Mar 12 10:45:10 my-laptop sudo: pam_unix(sudo:session): session opened for user 
 Mar 12 10:45:12 my-laptop sudo: pam_unix(sudo:session): session closed for user root
 Mar 12 10:50:01 my-laptop CRON[12360]: pam_unix(cron:session): session opened for user root by (uid=0)
 Mar 12 10:50:01 my-laptop CRON[12360]: pam_unix(cron:session): session closed for user root
+Mar 12 11:00:00 my-laptop sshd[123]: Failed password for invalid user fakeuser from 2.2.2.2 port 22 ssh2
+
+Mar 12 11:05:00 my-laptop sshd[123]: Failed password for invalid user fakeuser from 3.3.3.3 port 22 ssh2

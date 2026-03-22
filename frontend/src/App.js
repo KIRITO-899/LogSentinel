@@ -1,35 +1,42 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import axios from 'axios';
+import { io } from 'socket.io-client';
 import { DataGrid } from '@mui/x-data-grid';
 import LogChart from './components/LogChart';
 import TimeChart from './components/TimeChart';
 import Alerts from './components/Alerts';
 import './App.css';
 
+// Construct the socket using the proxy or current domain
+const socket = io();
+
 function App() {
   const [logs, setLogs] = useState([]);
+  const [alerts, setAlerts] = useState([]);
   const [logTypeFilter, setLogTypeFilter] = useState('');
   const [processNameFilter, setProcessNameFilter] = useState('');
 
   useEffect(() => {
-    const fetchLogs = () => {
-      axios.get('/api/logs')
-        .then(response => {
-          const logsWithIds = response.data.map((log, index) => ({
-            ...log,
-            id: index,
-          }));
-          setLogs(logsWithIds);
-        })
-        .catch(error => {
-          console.error('Error fetching logs:', error);
-        });
+    socket.on('initial_data', (data) => {
+      setLogs(data.logs);
+      setAlerts(data.alerts);
+    });
+
+    socket.on('new_log', (log) => {
+      setLogs((prevLogs) => {
+        const updatedLogs = [...prevLogs, log];
+        return updatedLogs.length > 1000 ? updatedLogs.slice(-1000) : updatedLogs;
+      });
+    });
+
+    socket.on('update_alerts', (newAlerts) => {
+      setAlerts(newAlerts);
+    });
+
+    return () => {
+      socket.off('initial_data');
+      socket.off('new_log');
+      socket.off('update_alerts');
     };
-
-    fetchLogs(); // Initial fetch
-    const intervalId = setInterval(fetchLogs, 5000); // Fetch every 5 seconds
-
-    return () => clearInterval(intervalId); // Cleanup on component unmount
   }, []);
 
   const filteredLogs = useMemo(() => {
@@ -52,8 +59,8 @@ function App() {
 
   return (
     <div className="App" style={{ width: '100%' }}>
-      <h1>LogSentinel</h1>
-      <Alerts />
+      <h1>LogSentinel Real-Time</h1>
+      <Alerts alerts={alerts} />
       
       <h2>Filters</h2>
       <div style={{ marginBottom: '10px' }}>
@@ -79,8 +86,12 @@ function App() {
         <DataGrid
           rows={filteredLogs}
           columns={columns}
-          pageSize={5}
-          rowsPerPageOptions={[5]}
+          initialState={{
+            pagination: {
+              paginationModel: { pageSize: 5, page: 0 },
+            },
+          }}
+          pageSizeOptions={[5, 10, 25]}
           checkboxSelection
         />
       </div>

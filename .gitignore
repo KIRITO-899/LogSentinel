@@ -1,0 +1,16 @@
+# Environments
+backend/venv/
+venv/
+.env
+
+# Python caches
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Node / React
+node_modules/
+frontend/node_modules/
+build/
+frontend/build/
+.DS_Store
