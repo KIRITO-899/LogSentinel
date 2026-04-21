@@ -48,7 +48,7 @@ def get_alerts():
 
 @socketio.on('connect')
 def handle_connect():
-    socketio.emit('initial_data', {'logs': all_logs, 'alerts': all_alerts})
+    socketio.emit('initial_data', {'logs': all_logs, 'alerts': all_alerts}, to=request.sid)
 
 def start_collectors():
     is_windows = sys.platform == 'win32'
