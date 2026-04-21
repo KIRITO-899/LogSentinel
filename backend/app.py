@@ -1,6 +1,6 @@
 from flask import Flask, jsonify, request
 from flask_cors import CORS
-from flask_socketio import SocketIO
+from flask_socketio import SocketIO, emit
 import os
 import sys
 import threading
@@ -48,7 +48,7 @@ def get_alerts():
 
 @socketio.on('connect')
 def handle_connect():
-    socketio.emit('initial_data', {'logs': all_logs, 'alerts': all_alerts})
+    emit('initial_data', {'logs': all_logs, 'alerts': all_alerts})
 
 def start_collectors():
     is_windows = sys.platform == 'win32'
